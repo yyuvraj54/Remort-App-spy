@@ -3,7 +3,8 @@ package com.app.remortapp;
 public class OrderHelper {
     String ontime,offtime,startRec,forceClose,running;
     public OrderHelper(){}
-    public OrderHelper(String ontime, String offtime, String startRec, String forceClose,String running) {
+
+    public OrderHelper(String ontime, String offtime, String startRec, String forceClose, String running) {
         this.ontime = ontime;
         this.offtime = offtime;
         this.startRec = startRec;
@@ -50,4 +51,5 @@ public class OrderHelper {
     public void setRunning(String running) {
         this.running = running;
     }
+
 }

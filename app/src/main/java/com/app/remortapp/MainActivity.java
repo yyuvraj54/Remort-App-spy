@@ -35,9 +35,10 @@ public class MainActivity extends AppCompatActivity implements dilogcode.Example
     ArrayList<OrderHelper> last;
 
     EditText start ,stop;
-    Button Newschedule ,startrecordding ,stoprecording,restoreDefault ,unin;
+    Button Newschedule ,startrecordding ,stoprecording,restoreDefault ,unin,deletefiles;
     TextView ru,offt,ont,fc,recs,autorec,call;
-    Switch swi;
+
+
 
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements dilogcode.Example
         startrecordding=findViewById(R.id.startRec);
         stoprecording=findViewById(R.id.stopRec);
 
-        swi=findViewById(R.id.switch1);
+        deletefiles=findViewById(R.id.Autorecbutton);
 
         restoreDefault=findViewById(R.id.setup);
 
@@ -79,13 +80,10 @@ public class MainActivity extends AppCompatActivity implements dilogcode.Example
         databaseReferenceAdmin=firebaseDatabase.getReference("Admin");
 
 
-
-        swi.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+        deletefiles.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked){ AutorecOption("1"); }
-                else{AutorecOption("0");}
-
+            public void onClick(View v) {
+                AutorecOption("1");
             }
         });
 
@@ -123,6 +121,7 @@ public class MainActivity extends AppCompatActivity implements dilogcode.Example
             @Override
             public void onClick(View v) {
                 setdata("12:00:00","12:10:00","0","0","1");
+                resetRemoveFiles("0");
             }
         });
 
@@ -134,13 +133,17 @@ public class MainActivity extends AppCompatActivity implements dilogcode.Example
                     items.add(snap.getValue().toString());
                 }
 
-                fc.setText("Force Close:        "+items.get(0));
+                if(items.get(0).equals("1")){
+                    fc.setText("Force Close:        "+"Service Killed");
+                }
+                else{fc.setText("Force Close:  "+"      Service Running");}
+
                 offt.setText("Off Timing:           "+items.get(1));
                 ont.setText("On Timing:           "+items.get(2));
                 ru.setText("Running State:    "+items.get(3));
 
-                if (items.get(4).equals("0")){ recs.setText("Rec Start:             no(code-"+items.get(4)+")");}
-                else{recs.setText("Rec Start:             yes(code-"+items.get(4)+")");}
+                if (items.get(4).equals("0")){ recs.setText("Rec Start:             No(code-"+items.get(4)+")");}
+                else{recs.setText("Rec Start:             Yes(code-"+items.get(4)+")");}
             }
 
             @Override
@@ -165,14 +168,13 @@ public class MainActivity extends AppCompatActivity implements dilogcode.Example
                     adminrr.add(snaps.getValue().toString());
                 }
                 if (adminrr.get(0).equals("1")){
-                    swi.setChecked(true);
-                autorec.setText("Auto Rec:          "+adminrr.get(0));}
-                else{ swi.setChecked(false);autorec.setText("Auto Rec:          "+adminrr.get(0));}
+                autorec.setText("R.S.F: "+adminrr.get(0) +"  (Removing)");}
+                else{autorec.setText("R.S.F: "+adminrr.get(0)+"  (No Action)");}
 
-                if (adminrr.get(1).contains("idle")){call.setTextColor(Color.BLACK); call.setText("Call State:           "+adminrr.get(1));}
-                else if (adminrr.get(1).contains("talking")){call.setTextColor(Color.GREEN); call.setText("Call State:           "+adminrr.get(1));}
+                if (adminrr.get(1).contains("idle")){call.setTextColor(Color.BLACK); call.setText("Call State:           "+adminrr.get(1));startrecordding.setEnabled(true);stoprecording.setEnabled(true);}
+                else if (adminrr.get(1).contains("talking")){call.setTextColor(Color.GRAY); call.setText("Call State:           "+adminrr.get(1));}
                 else if (adminrr.get(1).contains("Ringing")){call.setTextColor(Color.BLUE); call.setText("Call State:           "+adminrr.get(1));}
-            }
+            }//startrecordding.setEnabled(false);stoprecording.setEnabled(false);
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -190,7 +192,6 @@ public class MainActivity extends AppCompatActivity implements dilogcode.Example
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
 
                     OrderHelper DATA=new OrderHelper(ontime, offtime, startRec, forceClose,running);
                     databaseReference.setValue(DATA);
@@ -224,11 +225,16 @@ public class MainActivity extends AppCompatActivity implements dilogcode.Example
         dc.show(getSupportFragmentManager(),"Dialog");
     }
 
+    public void resetRemoveFiles(String deletefilesfrommob){
+        HashMap h=new HashMap();
+        h.put("auto_rec",deletefilesfrommob);
+        databaseReferenceAdmin.updateChildren(h);
+    }
     @Override
     public void applyTexts(String password) {
          if (password.equals("killme")){
              HashMap h=new HashMap();
-             h.put("force Close",1);
+             h.put("forceClose","1");
              databaseReference.updateChildren(h).addOnSuccessListener(new OnSuccessListener() {
                  @Override
                  public void onSuccess(Object o) {

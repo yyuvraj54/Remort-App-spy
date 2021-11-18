@@ -62,7 +62,8 @@
                     android:padding="10dp"
                     android:text="On Timing"
                     android:textColor="@color/black"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/off"
@@ -72,7 +73,8 @@
                     android:padding="10dp"
                     android:text="Off Timing"
                     android:textColor="@color/black"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/rec"
@@ -110,9 +112,10 @@
                     android:layout_height="wrap_content"
                     android:background="#FF8A65"
                     android:padding="10dp"
-                    android:text="Auto Rec"
+                    android:text="Remove Saved Files"
                     android:textColor="@color/black"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/call_state"
@@ -122,15 +125,17 @@
                     android:padding="10dp"
                     android:text="Call State"
                     android:textColor="@color/black"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    android:visibility="visible" />
 
-                <Switch
-                    android:id="@+id/switch1"
-                    android:layout_width="match_parent"
+                <Button
+                    android:id="@+id/Autorecbutton"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:text="Auto Rec State"
-                    android:textSize="20sp" />
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:text="Remove All saved files"
+                    android:visibility="gone" />
 
 
             </LinearLayout>
@@ -186,7 +191,8 @@
                 android:layout_margin="10dp"
                 android:background="#FFB74D"
                 android:orientation="vertical"
-                android:padding="5dp">
+                android:padding="5dp"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/textView3"
