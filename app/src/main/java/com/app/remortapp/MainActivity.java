@@ -5,6 +5,7 @@ import static android.content.ContentValues.TAG;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,7 +18,9 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.app.remortapp.Model.Recording;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements dilogcode.Example
     ArrayList<OrderHelper> last;
 
     EditText start ,stop;
-    Button Newschedule ,startrecordding ,stoprecording,restoreDefault ,unin,deletefiles;
+    Button Newschedule ,startrecordding ,stoprecording,restoreDefault ,unin,deletefiles, recActivityBtn;
     TextView ru,offt,ont,fc,recs,autorec,call;
 
 
@@ -59,6 +62,8 @@ public class MainActivity extends AppCompatActivity implements dilogcode.Example
         stoprecording=findViewById(R.id.stopRec);
 
         deletefiles=findViewById(R.id.Autorecbutton);
+
+        recActivityBtn=findViewById(R.id.recActivityBtn);
 
         restoreDefault=findViewById(R.id.setup);
 
@@ -183,6 +188,14 @@ public class MainActivity extends AppCompatActivity implements dilogcode.Example
         });
 
 
+        recActivityBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ShowRecActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
 
 
@@ -192,7 +205,6 @@ public class MainActivity extends AppCompatActivity implements dilogcode.Example
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
                     OrderHelper DATA=new OrderHelper(ontime, offtime, startRec, forceClose,running);
                     databaseReference.setValue(DATA);
                 Toast.makeText(MainActivity.this, "Upload Done", Toast.LENGTH_SHORT).show();

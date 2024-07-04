@@ -281,8 +281,18 @@
                         android:layout_marginLeft="10dp"
                         android:layout_weight="1"
                         android:text="Uninstall (SOS)" />
+
                 </LinearLayout>
             </LinearLayout>
+
+            <Button
+                android:id="@+id/recActivityBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:text="Recordings" />
+
 
         </LinearLayout>
 
